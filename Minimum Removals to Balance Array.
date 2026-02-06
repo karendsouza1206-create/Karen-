@@ -1,0 +1,20 @@
+#include<stdio.h>
+int compare(const void *a,const void *b){
+return(*(int*)a-*(int*)b);
+}
+int minRemoval(int* nums, int numsSize, int k) {
+    qsort(nums,numsSize,sizeof(int),compare);
+    int maxLen=1;
+    int i=0;
+    for(int j=0;j<numsSize;j++){
+        while((long long)nums[j]>(long long)k *nums[i]){
+            i++;
+        }
+        int len = j-i+1;
+        if(len>maxLen){
+            maxLen=len;
+
+        }
+    }
+    return numsSize-maxLen;
+}
