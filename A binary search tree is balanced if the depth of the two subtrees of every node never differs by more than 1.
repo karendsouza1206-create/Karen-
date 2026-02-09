@@ -1,0 +1,31 @@
+#define MAX 10000
+
+void inorder(struct TreeNode* root, int* arr, int* size) {
+    if (!root) return;
+    inorder(root->left, arr, size);
+    arr[(*size)++] = root->val;
+    inorder(root->right, arr, size);
+}
+
+
+struct TreeNode* build(int* arr, int left, int right) {
+    if (left > right) return NULL;
+
+    int mid = (left + right) / 2;
+
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = arr[mid];
+    node->left = build(arr, left, mid - 1);
+    node->right = build(arr, mid + 1, right);
+
+    return node;
+}
+
+struct TreeNode* balanceBST(struct TreeNode* root) {
+    int arr[MAX];
+    int size = 0;
+
+    inorder(root, arr, &size);
+
+    return build(arr, 0, size - 1);
+}
