@@ -1,0 +1,43 @@
+#include <stdlib.h>
+
+
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+int preorderIndex = 0;
+
+struct TreeNode* build(int* preorder, int* inorder, 
+                       int inStart, int inEnd, int size) {
+    
+    if (inStart > inEnd)
+        return NULL;
+
+    struct TreeNode* root = 
+        (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    
+    root->val = preorder[preorderIndex++];
+    root->left = root->right = NULL;
+
+
+    int mid;
+    for (mid = inStart; mid <= inEnd; mid++) {
+        if (inorder[mid] == root->val)
+            break;
+    }
+
+   
+    root->left = build(preorder, inorder, inStart, mid - 1, size);
+
+    root->right = build(preorder, inorder, mid + 1, inEnd, size);
+
+    return root;
+}
+
+struct TreeNode* buildTree(int* preorder, int preorderSize, 
+                           int* inorder, int inorderSize) {
+    preorderIndex = 0;
+    return build(preorder, inorder, 0, inorderSize - 1, inorderSize);
+}
